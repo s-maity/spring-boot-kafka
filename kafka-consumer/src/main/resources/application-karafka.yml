@@ -1,0 +1,21 @@
+server:
+  port: 8048
+
+app:
+  topic-name: xmfueozy-default
+  group-id: xmfueozy-consumers
+
+spring:
+  kafka:
+    bootstrap-servers: dory.srvs.cloudkafka.com:9094
+    properties:
+      security.protocol: SASL_SSL
+      sasl:
+        mechanism: SCRAM-SHA-256
+        jaas:
+          config: org.apache.kafka.common.security.scram.ScramLoginModule required username="xmfueozy" password="2XI0FnNCpKFOeNL5Mf7_CtbkhQIkxrpB";
+
+    consumer:
+      group-id: xmfueozy-consumers
+
+
