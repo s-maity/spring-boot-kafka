@@ -14,6 +14,14 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "${app.topic-name}", groupId = "${app.group-id}")
     public void consumeUser(UserPayload user) {
+        simulateFailure(user);
         System.out.println("Message consumed:" + user);
+    }
+
+    private void simulateFailure(UserPayload payload) {
+        if (payload.name() == null || payload.name()
+                .isBlank()) {
+            throw new RuntimeException("Ivalid name");
+        }
     }
 }

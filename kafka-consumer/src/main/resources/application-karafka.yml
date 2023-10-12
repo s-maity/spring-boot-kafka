@@ -17,5 +17,13 @@ spring:
 
     consumer:
       group-id: xmfueozy-consumers
-
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.example.kafkatest
+    dead_letter_topic: retry_topic
 
