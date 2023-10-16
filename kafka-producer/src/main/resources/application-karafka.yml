@@ -1,7 +1,7 @@
 server.port: 8047
 
 app:
-  topic-name: xmfueozy-default
+  topic-name: xmfueozy-my-kafka-topic
   group-id: xmfueozy-consumers
 
 spring:
@@ -13,12 +13,11 @@ spring:
         mechanism: SCRAM-SHA-256
         jaas:
           config: org.apache.kafka.common.security.scram.ScramLoginModule required username="xmfueozy" password="2XI0FnNCpKFOeNL5Mf7_CtbkhQIkxrpB";
-    consumer:
-      auto-offset-reset: latest
+#    consumer:
+#      auto-offset-reset: latest
 
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-
       properties:
         enable.idempotence: false
 

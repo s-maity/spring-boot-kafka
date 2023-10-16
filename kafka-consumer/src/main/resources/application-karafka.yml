@@ -2,7 +2,7 @@ server:
   port: 8048
 
 app:
-  topic-name: xmfueozy-default
+  topic-name: xmfueozy-my-kafka-topic
   group-id: xmfueozy-consumers
 
 spring:
@@ -19,11 +19,11 @@ spring:
       group-id: xmfueozy-consumers
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
       properties:
         spring:
           json:
             trusted:
               packages: com.example.kafkatest
-    dead_letter_topic: retry_topic
+#    dead_letter_topic: retry_topic
 

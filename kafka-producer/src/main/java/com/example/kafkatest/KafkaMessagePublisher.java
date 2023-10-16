@@ -1,6 +1,5 @@
 package com.example.kafkatest;
 
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,8 +19,12 @@ public class KafkaMessagePublisher {
     @Autowired
     private KafkaTemplate<String, UserPayload> templateUserPayload;
 
+    @Autowired
+    private KafkaTemplate<String, String> bookingKafkaTemplate;
+
     public void publish(String message) {
-        CompletableFuture<SendResult<String, String>> future = template.send(topicName, message);
+        String key = message;
+        CompletableFuture<SendResult<String, String>> future = template.send(topicName, key, message);
         future.whenComplete((result, ex) -> {
             if (ex == null) {
                 System.out.println("Published Message with offset=" + result.getRecordMetadata()
@@ -34,7 +37,7 @@ public class KafkaMessagePublisher {
     }
 
     public void publish(UserPayload payload) {
-        CompletableFuture<SendResult<String, UserPayload>> future = templateUserPayload.send(topicName, payload);
+        CompletableFuture<SendResult<String, UserPayload>> future = templateUserPayload.send(topicName, String.valueOf(payload.id()), payload);
         future.whenComplete((result, ex) -> {
             if (ex == null) {
                 System.out.println("Published Message with offset=" + result.getRecordMetadata()
@@ -42,6 +45,18 @@ public class KafkaMessagePublisher {
                         .partition());
             } else {
                 System.out.println("Exception when publish:" + ex.getMessage());
+            }
+        });
+    }
+
+    private static void handeleFuture(CompletableFuture<SendResult<String, String>> future) {
+        future.whenComplete((result, ex) -> {
+            if (ex == null) {
+                System.out.println("Published Message with offset=" + result.getRecordMetadata()
+                        .offset() + " In partition=" + result.getRecordMetadata()
+                        .partition());
+            } else {
+                System.out.println("Exception when Booking:" + ex.getMessage());
             }
         });
     }
